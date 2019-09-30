@@ -49,22 +49,41 @@ public class ProductosServicioImpl implements ProductoServicio {
 
 	@Override
 	public Producto getById(Long id) {
-		throw new UnsupportedOperationException("Método no implementado");
+		try {
+		return dao.getById(id);
+		} catch (AccesoDatosException e) {
+			throw new ServiciosException("Ha habido un error al buscar el prodructo mediante la ID", e);
+		}
+		
+		//throw new UnsupportedOperationException("Método no implementado");
 	}
 
 	@Override
 	public Producto insert(Producto producto) {
-		return dao.insert(producto);
+		try {
+			return dao.insert(producto);
+			} catch (AccesoDatosException e) {
+				throw new ServiciosException("Ha habido un error al añadir el prodructo", e);
+			}
 	}
 
 	@Override
 	public Producto update(Producto producto) {
-		throw new UnsupportedOperationException("Método no implementado");
+
+		try {
+			return dao.update(producto);
+			} catch (AccesoDatosException e) {
+				throw new ServiciosException("Ha habido un error al actualizar el prodructo", e);
+			}
 	}
 
 	@Override
 	public Producto delete(Producto producto) {
-		throw new UnsupportedOperationException("Método no implementado");
+		try {
+			return dao.delete(producto);
+			} catch (AccesoDatosException e) {
+				throw new ServiciosException("Ha habido un error al eliminar el prodructo", e);
+			}
 	}
 
 }

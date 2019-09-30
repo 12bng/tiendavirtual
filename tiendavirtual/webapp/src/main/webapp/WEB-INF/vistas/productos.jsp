@@ -18,8 +18,8 @@
 				<td>${p.nombre}</td>
 				<td>${p.descripcion}</td>
 				<td><fmt:formatNumber value="${p.precio}" type="currency" /></td>
-				<td><a href="editar" class="btn btn-primary">Editar</a></td>
-				<td><a href="productos" class="btn btn-primary">Eliminar</a></td>
+				<td><a href="editar?id=${p.id}" class="btn btn-primary">Editar</a></td>
+				<td><a href="eliminar?id=${p.id}" class="btn btn-primary">Eliminar</a></td>
 			</tr>
 		</c:forEach>
 	</tbody>

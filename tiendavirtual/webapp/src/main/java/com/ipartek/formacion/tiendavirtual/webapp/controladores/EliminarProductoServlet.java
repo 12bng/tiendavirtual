@@ -7,33 +7,37 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.tiendavirtual.servicios.ProductoServicio;
+
 /**
  * Servlet implementation class EliminarProductoServlet
  */
-@WebServlet("/EliminarProductoServlet")
+@WebServlet("/eliminar")
 public class EliminarProductoServlet extends HttpServlet {
+	private static final String PRODUCTOS_JSP = "/WEB-INF/vistas/productos.jsp";
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EliminarProductoServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		ProductoServicio servicio = (ProductoServicio) getServletContext().getAttribute("servicioProductos");
+		try {
+			//System.out.println(Long.parseLong(request.getParameter("id")));
+		servicio.delete(servicio.getById(Long.parseLong(request.getParameter("id"))));}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("productos", servicio.getAll());
+		request.getRequestDispatcher(PRODUCTOS_JSP).forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 	}
 
 }
