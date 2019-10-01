@@ -36,6 +36,20 @@
 			<div class="invalid-feedback">${producto.errorPrecio}</div>
 		</div>
 	</div>
+
+	
+	<div class="form-group row">
+		<label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
+		<div class="col-sm-10">
+			<input type="number" step="1"
+				class="form-control ${producto.validezCantidad}" id="cantidad"
+				name="cantidad" placeholder="Introduce la cantidad de producto"
+				value="${producto.cantidad}">
+			<div class="invalid-feedback">${producto.errorCantidad}</div>
+		</div>
+	</div>
+	
+	
 	<div class="form-group row">
 		<div class="col-sm-10">
 			<button type="submit" class="btn btn-primary">Añadir</button>

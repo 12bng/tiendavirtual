@@ -35,7 +35,8 @@ public class EditarProductoServlet extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String descripcion = request.getParameter("descripcion");
 		String precio = request.getParameter("precio");
-		Producto producto = new Producto(Long.parseLong((String) request.getParameter("id")), nombre, descripcion, precio);
+		String cantidad = request.getParameter("cantidad");
+		Producto producto = new Producto(Long.parseLong((String) request.getParameter("id")), nombre, descripcion, precio, cantidad);
 		if (producto.isError()) {
 			request.setAttribute("producto", producto);
 		} else {

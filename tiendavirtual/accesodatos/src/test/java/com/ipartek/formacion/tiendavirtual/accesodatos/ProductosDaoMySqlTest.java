@@ -22,10 +22,10 @@ public class ProductosDaoMySqlTest {
 		
 		assertEquals(
 				new Producto(1L, "Pantalla", "Pantalla de super resolución que mola un mónton", 
-						new BigDecimal("123.12")), productos.get(0));
+						new BigDecimal("123.12"), 10), productos.get(0));
 		assertEquals(
 				new Producto(2L, "Ratón", "Ratón que te ...", 
-						new BigDecimal("23.12")), productos.get(1));
+						new BigDecimal("23.12"), 12), productos.get(1));
 		
 	}
 

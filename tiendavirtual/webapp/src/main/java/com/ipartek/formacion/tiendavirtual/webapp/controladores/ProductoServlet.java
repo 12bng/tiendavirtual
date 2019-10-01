@@ -28,8 +28,9 @@ public class ProductoServlet extends HttpServlet {
 			String nombre = request.getParameter("nombre");
 			String descripcion = request.getParameter("descripcion");
 			String precio = request.getParameter("precio");
+			String cantidad = request.getParameter("cantidad");
 
-			Producto producto = new Producto(nombre, descripcion, precio);
+			Producto producto = new Producto(null, nombre, descripcion, precio, cantidad);
 
 			if (producto.isError()) {
 				request.setAttribute("producto", producto);

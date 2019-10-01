@@ -9,6 +9,7 @@
 			<th>Nombre</th>
 			<th>Descripción</th>
 			<th>Precio</th>
+			<th>Cantidad</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -18,6 +19,7 @@
 				<td>${p.nombre}</td>
 				<td>${p.descripcion}</td>
 				<td><fmt:formatNumber value="${p.precio}" type="currency" /></td>
+				<td>${p.cantidad}</td>
 				<td><a href="editar?id=${p.id}" class="btn btn-primary">Editar</a></td>
 				<td><a href="eliminar?id=${p.id}" class="btn btn-primary">Eliminar</a></td>
 			</tr>

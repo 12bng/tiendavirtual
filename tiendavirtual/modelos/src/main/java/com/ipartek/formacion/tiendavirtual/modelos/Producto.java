@@ -8,10 +8,11 @@ public class Producto {
 	private Long id;
 	private String nombre, descripcion;
 	private BigDecimal precio;
+	private Integer cantidad;
 
 	private boolean error = false;
-	private String validezNombre = "", validezDescripcion = "", validezPrecio = "";
-	private String errorNombre = "", errorDescripcion = "", errorPrecio = "";
+	private String validezNombre = "", validezDescripcion = "", validezPrecio = "", validezCantidad="";
+	private String errorNombre = "", errorDescripcion = "", errorPrecio = "", errorCantidad="";
 
 	public Producto(String nombre, String descripcion, String precio) {
 		this(null, nombre, descripcion, precio);
@@ -24,15 +25,23 @@ public class Producto {
 		setPrecio(precio);
 	}
 
-	public Producto(Long id, String nombre, String descripcion, BigDecimal precio) {
+	public Producto(Long id, String nombre, String descripcion, BigDecimal precio, Integer cantidad) {
 		setId(id);
 		setNombre(nombre);
 		setDescripcion(descripcion);
 		setPrecio(precio);
+		setCantidad(cantidad);
 	}
-
+	public Producto(Long id, String nombre, String descripcion, String precio, String cantidad) {
+		setId(id);
+		setNombre(nombre);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		setCantidad(cantidad);
+	}
 	public Producto() {
 	}
+
 
 	public Long getId() {
 		return id;
@@ -69,6 +78,49 @@ public class Producto {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 		setValidezDescripcion(IS_VALID);
+	}
+	public void setCantidad(Integer cantidad) {
+		if (cantidad == null) {
+			throw new ModeloException("No se admite una cantidad nula");
+		}
+
+		if (cantidad.compareTo(new Integer(0)) < 0) {
+			setErrorCantidad("La cantidad ha de ser positiva");
+		}
+
+		this.cantidad = cantidad;
+
+		if(getErrorCantidad().equals("")) {
+			setValidezCantidad(IS_VALID);
+		}
+	}
+
+	public void setCantidad(String cantidad) {
+		if (cantidad == null) {
+			//throw new ModeloException("No se admite una cantidad nula");
+			setCantidad(0);
+		}
+
+//		if (cantidad.trim().length() == 0) {
+//			setErrorPrecio("La cantidad se debe rellenar");
+//			return;
+//		}
+
+		try {
+			setCantidad(new Integer(cantidad));
+		} catch (NumberFormatException e) {
+			setErrorCantidad("La cantidad han de ser numeros enteros");
+		}
+	}
+	public int getCantidad() {
+		return this.cantidad;
+	}
+
+	public void setValidezCantidad(String validezCantidad) {
+		this.validezCantidad=validezCantidad;
+	}
+	public String getValidezCantidad() {
+		return this.validezCantidad;
 	}
 
 	public BigDecimal getPrecio() {
@@ -145,7 +197,14 @@ public class Producto {
 		setValidezPrecio(IS_INVALID);
 		this.errorPrecio = errorPrecio;
 	}
-
+	public void setErrorCantidad(String errorCantidad) {
+		setError(true);
+		setValidezCantidad(IS_INVALID);
+		this.errorCantidad=errorCantidad;
+	}
+	public String getErrorCantidad() {
+		return this.errorCantidad;
+	}
 	public String getValidezNombre() {
 		return validezNombre;
 	}
@@ -178,6 +237,7 @@ public class Producto {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((precio == null) ? 0 : precio.hashCode());
+		result = prime * result + ((cantidad == null) ? 0 : cantidad.hashCode());
 		return result;
 	}
 
@@ -210,12 +270,17 @@ public class Producto {
 				return false;
 		} else if (!precio.equals(other.precio))
 			return false;
+		if (cantidad==null) {
+			if(other.cantidad !=null)
+				return false;
+		} else if(!cantidad.equals(other.cantidad))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio
+		return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", cantidad=" + cantidad
 				+ "]";
 	}
 

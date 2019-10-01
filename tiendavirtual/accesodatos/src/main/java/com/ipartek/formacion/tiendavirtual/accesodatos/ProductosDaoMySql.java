@@ -12,8 +12,8 @@ import com.ipartek.formacion.tiendavirtual.modelos.Producto;
 public class ProductosDaoMySql implements Dao<Long, Producto> {
 	private static final String PRODUCTOS_GET_ALL = "{ call productos_getAll() }";
 	private static final String PRODUCTOS_SELECT_BY_ID = "{ call productos_getById(?) }";
-	private static final String PRODUCTOS_INSERT = "{ call productos_insert(?,?,?,?) }";
-	private static final String PRODUCTOS_UPDATE = "{ call productos_update(?,?,?,?) }";
+	private static final String PRODUCTOS_INSERT = "{ call productos_insert(?,?,?,?,?) }";
+	private static final String PRODUCTOS_UPDATE = "{ call productos_update(?,?,?,?,?) }";
 	private static final String PRODUCTOS_DELETE = "{ call productos_delete(?,?,?,?) }";
 	private static final String PRODUCTOS_DELETE_BY_ID = "{ call productos_deleteById(?) }";
 	
@@ -64,7 +64,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 
 				while (rs.next()) {
 					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
-							rs.getBigDecimal("precio"));
+							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
 
 					productos.add(producto);
 				}
@@ -90,7 +90,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				Producto producto = null;
 				while(rs.next()) {
 					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
-							rs.getBigDecimal("precio"));
+							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
 				}
 				return producto;
 			} catch (SQLException e) {
@@ -112,12 +112,12 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				cs.setString(1, producto.getNombre());
 				cs.setString(2, producto.getDescripcion());
 				cs.setBigDecimal(3, producto.getPrecio());
-				
-				cs.registerOutParameter(4, java.sql.Types.INTEGER);
+				cs.setInt(4, producto.getCantidad());
+				cs.registerOutParameter(5, java.sql.Types.INTEGER);
 				
 				cs.executeUpdate();
 				
-				producto.setId(cs.getLong(4));
+				producto.setId(cs.getLong(5));
 				
 				return producto;
 
@@ -137,6 +137,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				cs.setString(2, objeto.getNombre());
 				cs.setString(3, objeto.getDescripcion());
 				cs.setBigDecimal(4, objeto.getPrecio());
+				cs.setInt(5, objeto.getCantidad());
 				cs.executeUpdate();
 
 			} catch (SQLException e) {
