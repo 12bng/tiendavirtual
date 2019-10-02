@@ -86,4 +86,22 @@ public class ProductosServicioImpl implements ProductoServicio {
 			}
 	}
 
+	@Override
+	public String login(String correo, String contrasena) {
+		try {
+			return dao.login(correo, contrasena);
+			} catch (AccesoDatosException e) {
+				throw new ServiciosException("Ha habido un error al logearse", e);
+			}
+	}
+
+	@Override
+	public Boolean alCarrito(Integer productoID, String correoUsuario) {
+		try {
+			return dao.alCarrito(productoID, correoUsuario);
+		}catch (AccesoDatosException e) {
+			throw new ServiciosException("Ha habido un error al añadir un producto al carrito de la compra", e);
+		}
+	}
+
 }

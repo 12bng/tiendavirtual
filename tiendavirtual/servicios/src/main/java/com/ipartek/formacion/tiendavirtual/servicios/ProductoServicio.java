@@ -9,4 +9,6 @@ public interface ProductoServicio {
 	Producto insert(Producto producto);
 	Producto update(Producto producto);
 	Producto delete(Producto producto);
+	String login(String correo, String contrasena);
+	Boolean alCarrito(Integer productoID, String correoUsuario);
 }

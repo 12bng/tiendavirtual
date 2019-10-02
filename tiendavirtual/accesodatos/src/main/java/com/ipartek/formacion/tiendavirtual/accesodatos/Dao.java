@@ -8,4 +8,6 @@ public interface Dao<PK, T> {
 	T update(T objeto);
 	T delete(T objeto);
 	T deleteById(PK id);
+	String login(String correo, String consrasena);
+	Boolean alCarrito(Integer productoID, String correoUsuario);
 }

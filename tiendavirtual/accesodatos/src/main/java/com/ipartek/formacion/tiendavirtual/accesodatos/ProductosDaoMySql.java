@@ -16,6 +16,9 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 	private static final String PRODUCTOS_UPDATE = "{ call productos_update(?,?,?,?,?) }";
 	private static final String PRODUCTOS_DELETE = "{ call productos_delete(?,?,?,?) }";
 	private static final String PRODUCTOS_DELETE_BY_ID = "{ call productos_deleteById(?) }";
+	private static final String USUARIOS_LOGIN = "{ call usuarios_login(?,?) }";
+	private static final String PRODUCTOS_ELIMINARUNOSTOCK = "{ call productos_eliminarUnoStock(?) }";
+	private static final String PRODUCTOS_ALCARRITO = "{ call productos_alCarrito(?,?) }";
 	
 	public String url, user, password, driver;
 	
@@ -186,4 +189,49 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 		}
 	}
 
+	@Override
+	public String login(String correo, String contrasena) {
+		try (Connection con = getConnection()) {
+			try (CallableStatement cs = con.prepareCall(USUARIOS_LOGIN)) {
+				cs.setString(1, correo);
+				cs.setString(2, contrasena);
+				ResultSet rs = cs.executeQuery();
+				if (rs.next()) {
+					return rs.getString("nombre");
+				}
+				return null;
+
+			} catch (SQLException e) {
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + USUARIOS_LOGIN);
+			}
+		} catch (SQLException e) {
+			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
+		
+	}
+	}
+
+	@Override
+	public Boolean alCarrito(Integer productoID, String correoUsuario) {
+		try (Connection con = getConnection()) {
+//			try (CallableStatement cs = con.prepareCall(PRODUCTOS_ELIMINARUNOSTOCK)) {
+//				cs.setInt(1, productoID);
+//				cs.executeUpdate();	
+//			} catch (SQLException e) {
+//				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_ELIMINARUNOSTOCK);
+//			}
+			try (CallableStatement cs = con.prepareCall(PRODUCTOS_ALCARRITO)) {
+				cs.setInt(1, productoID);
+				cs.setString(2, correoUsuario);
+				cs.executeUpdate();	
+			} catch (SQLException e) {
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_ALCARRITO);
+			}
+			
+		} catch (SQLException e) {
+			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
+		
+	}
+		return true;
+		
+	}
 }
