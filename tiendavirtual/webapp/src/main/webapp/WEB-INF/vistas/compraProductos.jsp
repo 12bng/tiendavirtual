@@ -20,6 +20,7 @@
 				<td>${p.descripcion}</td>
 				<td><fmt:formatNumber value="${p.precio}" type="currency" /></td>
 				<td>${p.cantidad}</td>
+				<%if (request.getSession().getAttribute("userName")!=null){ %>
 				<c:if test="${p.cantidad > 0}">
 					<td>
 						<form action="/webapp/carrito" method="post">
@@ -32,7 +33,7 @@
 						</form>
 					</td>
 				</c:if>
-
+				<%} %>
 
 			</tr>
 		</c:forEach>

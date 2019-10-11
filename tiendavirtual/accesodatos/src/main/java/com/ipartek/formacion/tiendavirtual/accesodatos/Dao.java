@@ -10,4 +10,6 @@ public interface Dao<PK, T> {
 	T deleteById(PK id);
 	String login(String correo, String consrasena);
 	Boolean alCarrito(Integer productoID, String correoUsuario);
+	String nuevoUsuario(String correo, String usuario, String contraseña );
+	Iterable<T> getAllCarrito(String correoUsuario);
 }

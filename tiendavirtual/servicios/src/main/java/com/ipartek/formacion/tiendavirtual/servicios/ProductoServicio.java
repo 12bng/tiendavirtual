@@ -11,4 +11,6 @@ public interface ProductoServicio {
 	Producto delete(Producto producto);
 	String login(String correo, String contrasena);
 	Boolean alCarrito(Integer productoID, String correoUsuario);
+	String nuevoUsuario(String correo, String usuario, String contraseña );
+	Iterable<Producto> getAllCarrito(String correoUsuario);
 }

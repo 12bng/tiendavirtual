@@ -104,4 +104,22 @@ public class ProductosServicioImpl implements ProductoServicio {
 		}
 	}
 
+	@Override
+	public String nuevoUsuario(String correo, String usuario, String contraseña) {
+		try {
+			return dao.nuevoUsuario(correo, usuario, contraseña);
+		}catch (AccesoDatosException e) {
+			throw new ServiciosException("Ha habido un error al crear un nuevo usuario", e);
+		}
+	}
+
+	@Override
+	public Iterable<Producto> getAllCarrito(String correoUsuario) {
+		try {
+			return dao.getAllCarrito(correoUsuario);
+		} catch (AccesoDatosException e) {
+			throw new ServiciosException("Ha habido un error al pedir el listado del carrito", e);
+		}
+	}
+
 }

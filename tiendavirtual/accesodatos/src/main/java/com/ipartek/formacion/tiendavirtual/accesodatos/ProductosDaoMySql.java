@@ -17,8 +17,11 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 	private static final String PRODUCTOS_DELETE = "{ call productos_delete(?,?,?,?) }";
 	private static final String PRODUCTOS_DELETE_BY_ID = "{ call productos_deleteById(?) }";
 	private static final String USUARIOS_LOGIN = "{ call usuarios_login(?,?) }";
-	private static final String PRODUCTOS_ELIMINARUNOSTOCK = "{ call productos_eliminarUnoStock(?) }";
+	//private static final String PRODUCTOS_ELIMINARUNOSTOCK = "{ call productos_eliminarUnoStock(?) }";
 	private static final String PRODUCTOS_ALCARRITO = "{ call productos_alCarrito(?,?) }";
+	private static final String USUARIOS_NEWUSER = "{ call usuarios_nuevoUsuario(?,?,?,?) }";
+	private static final String PRODUCTOS_GET_ALL_CARRITO = "{ call productos_getAllCarrito(?) }";
+	
 	
 	public String url, user, password, driver;
 	
@@ -233,5 +236,52 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 	}
 		return true;
 		
+	}
+
+	@Override
+	public String nuevoUsuario(String correo, String nombre, String contraseña) {
+		try (Connection con = getConnection()) {
+			try (CallableStatement cs = con.prepareCall(USUARIOS_NEWUSER)) {
+				cs.setString(1, correo);
+				cs.setString(2, nombre);
+				cs.setString(3, contraseña);
+				cs.registerOutParameter(4, java.sql.Types.VARCHAR);
+				cs.executeUpdate();
+				return cs.getString(4);
+
+			} catch (SQLException e) {
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + USUARIOS_NEWUSER);
+			}
+		} catch (SQLException e) {
+			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
+		}
+	}
+
+	@Override
+	public Iterable<Producto> getAllCarrito(String correoUsuario) {
+		try (Connection con = getConnection()) {
+			try (CallableStatement cs = con.prepareCall(PRODUCTOS_GET_ALL_CARRITO)) {
+				cs.setString(1, correoUsuario);
+				ResultSet rs = cs.executeQuery();
+
+				ArrayList<Producto> productos = new ArrayList<>();
+
+				Producto producto;
+
+				while (rs.next()) {
+					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
+							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
+
+					productos.add(producto);
+				}
+
+				return productos;
+
+			} catch (SQLException e) {
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_GET_ALL_CARRITO);
+			}
+		} catch (SQLException e) {
+			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
+		}
 	}
 }

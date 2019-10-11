@@ -26,7 +26,6 @@
 			<button type="submit" class="btn btn-primary">Entrar</button>
 		</div>
 	</div>
-	<p id="error" style="color:#FF0000"><%=request.getAttribute("error") %></p>
 </form>
 
 <form action="/webapp/nuevoUsuario" method="get">

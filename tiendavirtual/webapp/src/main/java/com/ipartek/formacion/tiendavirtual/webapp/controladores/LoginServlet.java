@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.tiendavirtual.modelos.Mensaje;
 import com.ipartek.formacion.tiendavirtual.servicios.ProductoServicio;
 
 @WebServlet("/login")
@@ -26,7 +27,8 @@ public class LoginServlet extends HttpServlet {
 		String nombre = servicio.login(correo, password);
 		if(nombre==null) {
 			request.setAttribute("correo", correo);
-			request.setAttribute("error", "El correo o contraseña no es correcto");
+			request.setAttribute("mensaje", new Mensaje("warning", "Correo o contraseña incorrectos"));
+			//request.setAttribute("error", "El correo o contraseña no es correcto");
 			request.getRequestDispatcher("/WEB-INF/vistas/login.jsp").forward(request, response);
 		}
 		else {
