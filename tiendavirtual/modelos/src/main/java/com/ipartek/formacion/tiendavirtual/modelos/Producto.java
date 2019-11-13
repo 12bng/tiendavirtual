@@ -121,10 +121,16 @@ public class Producto {
 	public String getDescripcion() {
 		return descripcion;
 	}
-
+	//TODO
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-		setValidezDescripcion(IS_VALID);
+		if(!(descripcion.length()==0||descripcion.length()>=50)) {
+			setErrorDescripcion("La descripcion tiene que ser mayor a 50 caracteres");
+		}
+		if (getErrorDescripcion().equals("")) {
+			setValidezDescripcion(IS_VALID);
+		}
+		
 	}
 	public void setCantidad(Integer cantidad) {
 		if (cantidad == null) {
