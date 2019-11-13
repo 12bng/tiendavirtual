@@ -25,7 +25,7 @@ public class EliminarProductoServlet extends HttpServlet {
 		ProductoServicio servicio = (ProductoServicio) getServletContext().getAttribute("servicioProductos");
 		try {
 			//System.out.println(Long.parseLong(request.getParameter("id")));
-		servicio.delete(servicio.getById(Long.parseLong(request.getParameter("id"))));}
+		servicio.delete(Long.parseLong(request.getParameter("id")));}
 		catch(Exception e) {
 			e.printStackTrace();
 		}

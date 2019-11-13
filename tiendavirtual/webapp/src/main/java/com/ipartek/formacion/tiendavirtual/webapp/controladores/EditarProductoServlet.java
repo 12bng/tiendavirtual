@@ -32,11 +32,13 @@ public class EditarProductoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductoServicio servicio = (ProductoServicio) getServletContext().getAttribute("servicioProductos");
+		request.setCharacterEncoding("UTF-8");
 		String nombre = request.getParameter("nombre");
 		String descripcion = request.getParameter("descripcion");
 		String precio = request.getParameter("precio");
-		String cantidad = request.getParameter("cantidad");
-		Producto producto = new Producto(Long.parseLong((String) request.getParameter("id")), nombre, descripcion, precio, cantidad);
+		String url = request.getParameter("imagen");
+		String cantidad = "1";
+		Producto producto = new Producto(Long.parseLong((String) request.getParameter("id")), nombre, descripcion, precio, cantidad, url);
 		if (producto.isError()) {
 			request.setAttribute("producto", producto);
 		} else {

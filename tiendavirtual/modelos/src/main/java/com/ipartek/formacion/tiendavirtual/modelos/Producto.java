@@ -6,7 +6,15 @@ public class Producto {
 	private static final String IS_INVALID = "is-invalid";
 	private static final String IS_VALID = "is-valid";
 	private Long id;
-	private String nombre, descripcion;
+	private String nombre, descripcion, tienda, imagenurl;
+	public String getImagenurl() {
+		return imagenurl;
+	}
+
+	public void setImagenurl(String imagenurl) {
+		this.imagenurl = imagenurl;
+	}
+
 	private BigDecimal precio;
 	private Integer cantidad;
 
@@ -32,6 +40,14 @@ public class Producto {
 		setPrecio(precio);
 		setCantidad(cantidad);
 	}
+	public Producto(Long id, String nombre, String descripcion, String precio, Integer cantidad, String imagenurl) {
+		setId(id);
+		setNombre(nombre);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		setCantidad(cantidad);
+		this.imagenurl=imagenurl;
+	}
 	public Producto(Long id, String nombre, String descripcion, String precio, String cantidad) {
 		setId(id);
 		setNombre(nombre);
@@ -39,10 +55,41 @@ public class Producto {
 		setPrecio(precio);
 		setCantidad(cantidad);
 	}
+	public Producto(Long id, String tienda, String nombre, String descripcion, BigDecimal precio, String imagenurl, Integer cantidad) {
+		setId(id);
+		setNombre(nombre);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		this.imagenurl=imagenurl;
+		setTienda(tienda);
+		setCantidad(cantidad);
+	}
 	public Producto() {
 	}
 
+	public Producto(long id, String nombre, String descripcion, BigDecimal precio, String imagenurl) {
+		setId(id);
+		setNombre(nombre);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		this.imagenurl=imagenurl;
+	}
 
+	public Producto(long id, String nombre, String descripcion, String precio, String cantidad, String url) {
+		setId(id);
+		setNombre(nombre);
+		setDescripcion(descripcion);
+		setPrecio(precio);
+		this.imagenurl=url;
+		setCantidad(cantidad);
+	}
+
+	public void setTienda(String tienda) {
+		this.tienda=tienda;
+	}
+	public String getTienda() {
+		return this.tienda;
+	}
 	public Long getId() {
 		return id;
 	}

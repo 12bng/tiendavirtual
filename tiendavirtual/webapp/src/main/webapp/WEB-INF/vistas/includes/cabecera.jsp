@@ -29,6 +29,25 @@
 	<!-- Image and text -->
 	<nav class="navbar navbar-dark bg-dark sticky-top">
 		<a class="navbar-brand" href="#">Tienda Virtual </a>
+		
+		<%if (session.getAttribute("admin")!=null){ %>
+				<form action="/webapp/productos" method="get">
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary">Mantenimiento productos</button>
+							</div>
+						</div>
+				</form>
+		<%} %>
+		<%if (session.getAttribute("admin")!=null){ %>
+				<form action="/webapp/productos" method="get">
+						<div class="form-group row">
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary">Mantenimiento productos remoto</button>
+							</div>
+						</div>
+				</form>
+		<%} %>
 		<%if (request.getSession().getAttribute("userName")==null){ %>
 						<form action="/webapp/login" method="get">
 							<div class="form-group row">
@@ -37,16 +56,9 @@
 								</div>
 							</div>
 						</form>
-		
 		<%}else{ %>
 					<p style="color:#fff">Hola <%=request.getSession().getAttribute("userName") %></p>
-					<form action="/webapp/carrito" method="get">
-							<div class="form-group row">
-								<div class="col-sm-10">
-									<button type="submit" class="btn btn-primary">carrito</button>
-								</div>
-							</div>
-						</form>
+				
 						<form action="/webapp/logout" method="post">
 							<div class="form-group row">
 								<div class="col-sm-10">

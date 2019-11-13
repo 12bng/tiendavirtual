@@ -11,16 +11,16 @@ import com.ipartek.formacion.tiendavirtual.modelos.Producto;
 
 public class ProductosDaoMySql implements Dao<Long, Producto> {
 	private static final String PRODUCTOS_GET_ALL = "{ call productos_getAll() }";
+	private static final String PRODUCTOS_GET_ALLPRODUCTOS = "{ call productos_getAllProductos() }";
 	private static final String PRODUCTOS_SELECT_BY_ID = "{ call productos_getById(?) }";
 	private static final String PRODUCTOS_INSERT = "{ call productos_insert(?,?,?,?,?) }";
 	private static final String PRODUCTOS_UPDATE = "{ call productos_update(?,?,?,?,?) }";
-	private static final String PRODUCTOS_DELETE = "{ call productos_delete(?,?,?,?) }";
-	private static final String PRODUCTOS_DELETE_BY_ID = "{ call productos_deleteById(?) }";
+	private static final String PRODUCTOS_DELETE = "{ call productos_delete(?) }";
 	private static final String USUARIOS_LOGIN = "{ call usuarios_login(?,?) }";
 	//private static final String PRODUCTOS_ELIMINARUNOSTOCK = "{ call productos_eliminarUnoStock(?) }";
-	private static final String PRODUCTOS_ALCARRITO = "{ call productos_alCarrito(?,?) }";
-	private static final String USUARIOS_NEWUSER = "{ call usuarios_nuevoUsuario(?,?,?,?) }";
-	private static final String PRODUCTOS_GET_ALL_CARRITO = "{ call productos_getAllCarrito(?) }";
+	//private static final String PRODUCTOS_ALCARRITO = "{ call productos_alCarrito(?,?) }";
+	//private static final String USUARIOS_NEWUSER = "{ call usuarios_nuevoUsuario(?,?,?,?) }";
+	//private static final String PRODUCTOS_GET_ALL_CARRITO = "{ call productos_getAllCarrito(?) }";
 	
 	
 	public String url, user, password, driver;
@@ -69,8 +69,8 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				Producto producto;
 
 				while (rs.next()) {
-					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
-							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
+					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("productos.nombre"), rs.getString("descripcion"),
+							rs.getBigDecimal("precio"), rs.getString("imagen"),rs.getInt("cantidad"));
 
 					productos.add(producto);
 				}
@@ -96,7 +96,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				Producto producto = null;
 				while(rs.next()) {
 					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
-							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
+							rs.getBigDecimal("precio"), rs.getString("imagen"));
 				}
 				return producto;
 			} catch (SQLException e) {
@@ -118,7 +118,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				cs.setString(1, producto.getNombre());
 				cs.setString(2, producto.getDescripcion());
 				cs.setBigDecimal(3, producto.getPrecio());
-				cs.setInt(4, producto.getCantidad());
+				cs.setString(4, producto.getImagenurl());
 				cs.registerOutParameter(5, java.sql.Types.INTEGER);
 				
 				cs.executeUpdate();
@@ -143,7 +143,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				cs.setString(2, objeto.getNombre());
 				cs.setString(3, objeto.getDescripcion());
 				cs.setBigDecimal(4, objeto.getPrecio());
-				cs.setInt(5, objeto.getCantidad());
+				cs.setString(5, objeto.getImagenurl());
 				cs.executeUpdate();
 
 			} catch (SQLException e) {
@@ -157,35 +157,15 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 	}
 
 	@Override
-	public Producto delete(Producto objeto) {
+	public Producto delete(Long id) {
 		try (Connection con = getConnection()) {
 			try (CallableStatement cs = con.prepareCall(PRODUCTOS_DELETE)) {
-				cs.setLong(1, objeto.getId());
-				cs.setString(2, objeto.getNombre());
-				cs.setString(3, objeto.getDescripcion());
-				cs.setBigDecimal(4, objeto.getPrecio());
-				cs.executeUpdate();
-
-			} catch (SQLException e) {
-				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_DELETE);
-			}
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
-		}
-		//throw new UnsupportedOperationException("Método no implementado");
-		return null;
-	}
-
-	@Override
-	public Producto deleteById(Long id) {
-		try (Connection con = getConnection()) {
-			try (CallableStatement cs = con.prepareCall(PRODUCTOS_DELETE_BY_ID)) {
 				cs.setLong(1, id);
 				cs.executeUpdate();
 				return null;
 
 			} catch (SQLException e) {
-				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_DELETE_BY_ID);
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_DELETE);
 			}
 		} catch (SQLException e) {
 			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
@@ -200,7 +180,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				cs.setString(2, contrasena);
 				ResultSet rs = cs.executeQuery();
 				if (rs.next()) {
-					return rs.getString("nombre");
+					return rs.getString("administrador");
 				}
 				return null;
 
@@ -214,54 +194,9 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 	}
 
 	@Override
-	public Boolean alCarrito(Integer productoID, String correoUsuario) {
+	public Iterable<Producto> getAllProductos() {
 		try (Connection con = getConnection()) {
-//			try (CallableStatement cs = con.prepareCall(PRODUCTOS_ELIMINARUNOSTOCK)) {
-//				cs.setInt(1, productoID);
-//				cs.executeUpdate();	
-//			} catch (SQLException e) {
-//				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_ELIMINARUNOSTOCK);
-//			}
-			try (CallableStatement cs = con.prepareCall(PRODUCTOS_ALCARRITO)) {
-				cs.setInt(1, productoID);
-				cs.setString(2, correoUsuario);
-				cs.executeUpdate();	
-			} catch (SQLException e) {
-				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_ALCARRITO);
-			}
-			
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
-		
-	}
-		return true;
-		
-	}
-
-	@Override
-	public String nuevoUsuario(String correo, String nombre, String contraseña) {
-		try (Connection con = getConnection()) {
-			try (CallableStatement cs = con.prepareCall(USUARIOS_NEWUSER)) {
-				cs.setString(1, correo);
-				cs.setString(2, nombre);
-				cs.setString(3, contraseña);
-				cs.registerOutParameter(4, java.sql.Types.VARCHAR);
-				cs.executeUpdate();
-				return cs.getString(4);
-
-			} catch (SQLException e) {
-				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + USUARIOS_NEWUSER);
-			}
-		} catch (SQLException e) {
-			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
-		}
-	}
-
-	@Override
-	public Iterable<Producto> getAllCarrito(String correoUsuario) {
-		try (Connection con = getConnection()) {
-			try (CallableStatement cs = con.prepareCall(PRODUCTOS_GET_ALL_CARRITO)) {
-				cs.setString(1, correoUsuario);
+			try (CallableStatement cs = con.prepareCall(PRODUCTOS_GET_ALLPRODUCTOS)) {
 				ResultSet rs = cs.executeQuery();
 
 				ArrayList<Producto> productos = new ArrayList<>();
@@ -270,7 +205,7 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 
 				while (rs.next()) {
 					producto = new Producto(rs.getLong("id"), rs.getString("nombre"), rs.getString("descripcion"),
-							rs.getBigDecimal("precio"), rs.getInt("cantidad"));
+							rs.getBigDecimal("precio"), rs.getString("imagen"));
 
 					productos.add(producto);
 				}
@@ -278,10 +213,13 @@ public class ProductosDaoMySql implements Dao<Long, Producto> {
 				return productos;
 
 			} catch (SQLException e) {
-				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_GET_ALL_CARRITO);
+				throw new AccesoDatosException("No se ha podido llamar al procedimiento " + PRODUCTOS_GET_ALLPRODUCTOS);
 			}
 		} catch (SQLException e) {
 			throw new AccesoDatosException("Ha habido un error al cerrar la conexión a la base de datos", e);
 		}
 	}
+
+
+	
 }

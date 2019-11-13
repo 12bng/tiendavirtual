@@ -47,16 +47,7 @@ public class ProductosServicioImpl implements ProductoServicio {
 		}
 	}
 
-	@Override
-	public Producto getById(Long id) {
-		try {
-		return dao.getById(id);
-		} catch (AccesoDatosException e) {
-			throw new ServiciosException("Ha habido un error al buscar el prodructo mediante la ID", e);
-		}
-		
-		//throw new UnsupportedOperationException("Método no implementado");
-	}
+	
 
 	@Override
 	public Producto insert(Producto producto) {
@@ -78,9 +69,9 @@ public class ProductosServicioImpl implements ProductoServicio {
 	}
 
 	@Override
-	public Producto delete(Producto producto) {
+	public Producto delete(Long id) {
 		try {
-			return dao.delete(producto);
+			return dao.delete(id);
 			} catch (AccesoDatosException e) {
 				throw new ServiciosException("Ha habido un error al eliminar el prodructo", e);
 			}
@@ -96,30 +87,22 @@ public class ProductosServicioImpl implements ProductoServicio {
 	}
 
 	@Override
-	public Boolean alCarrito(Integer productoID, String correoUsuario) {
+	public Iterable<Producto> getAllProductos() {
 		try {
-			return dao.alCarrito(productoID, correoUsuario);
-		}catch (AccesoDatosException e) {
-			throw new ServiciosException("Ha habido un error al añadir un producto al carrito de la compra", e);
-		}
-	}
-
-	@Override
-	public String nuevoUsuario(String correo, String usuario, String contraseña) {
-		try {
-			return dao.nuevoUsuario(correo, usuario, contraseña);
-		}catch (AccesoDatosException e) {
-			throw new ServiciosException("Ha habido un error al crear un nuevo usuario", e);
-		}
-	}
-
-	@Override
-	public Iterable<Producto> getAllCarrito(String correoUsuario) {
-		try {
-			return dao.getAllCarrito(correoUsuario);
+			return dao.getAllProductos();
 		} catch (AccesoDatosException e) {
-			throw new ServiciosException("Ha habido un error al pedir el listado del carrito", e);
+			throw new ServiciosException("Ha habido un error al pedir el listado", e);
 		}
 	}
+
+	@Override
+	public Producto getById(long parseLong) {
+		try {
+			return dao.getById(parseLong);
+		} catch (AccesoDatosException e) {
+			throw new ServiciosException("Ha habido un error al pedir el listado", e);
+		}
+	}
+
 
 }

@@ -6,7 +6,7 @@
 	<div class="form-group row">
 		<label for="correo" class="col-sm-2 col-form-label">Correo</label>
 		<div class="col-sm-10">
-			<input type="email"
+			<input type="text"
 				id="correo"
 				name="correo" placeholder="Correo"
 				value="<%=request.getAttribute("correo")%>">
@@ -28,12 +28,6 @@
 	</div>
 </form>
 
-<form action="/webapp/nuevoUsuario" method="get">
-<div class="form-group row">
-		<div class="col-sm-10">
-			<button type="submit" class="btn btn-primary">Nuevo usuario</button>
-		</div>
-	</div>
-</form>
+
 
 <%@ include file="/WEB-INF/vistas/includes/pie.jsp"%>

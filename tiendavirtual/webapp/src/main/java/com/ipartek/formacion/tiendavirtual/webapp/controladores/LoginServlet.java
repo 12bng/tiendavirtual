@@ -16,28 +16,36 @@ public class LoginServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("correo", "");
+		request.getSession().setAttribute("admin", null);
 		request.setAttribute("error", "");
 		request.getRequestDispatcher("/WEB-INF/vistas/login.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductoServicio servicio = (ProductoServicio) getServletContext().getAttribute("servicioProductos"); 
-		String correo = request.getParameter("correo");
+		String usuario = request.getParameter("correo");
 		String password = request.getParameter("password");
-		String nombre = servicio.login(correo, password);
-		if(nombre==null) {
-			request.setAttribute("correo", correo);
-			request.setAttribute("mensaje", new Mensaje("warning", "Correo o contraseña incorrectos"));
+		String roll = servicio.login(usuario, password);
+		if(roll==null) {
+			request.setAttribute("correo", usuario);
+			request.setAttribute("mensaje", new Mensaje("warning", "usuario o contraseña incorrectos"));
 			//request.setAttribute("error", "El correo o contraseña no es correcto");
 			request.getRequestDispatcher("/WEB-INF/vistas/login.jsp").forward(request, response);
 		}
 		else {
-			request.getSession().setAttribute("userName", nombre);
-			request.getSession().setAttribute("userEmail", correo);
-			if (nombre.equals("admin")) {
-				request.getRequestDispatcher("/productos").forward(request, response);
+			if(Integer.parseInt(roll)==1) {
+				request.getSession().setAttribute("admin", roll);
+				request.getSession().setAttribute("userName", usuario + " - Administrador");
 			}
-			else request.getRequestDispatcher("/compras").forward(request, response);
+			else {
+				request.getSession().setAttribute("userName", usuario + " - Usuario");
+			}
+			//request.getSession().setAttribute("userEmail", usuario);
+			//if (nombre.equals("admin")) {
+			//	request.getRequestDispatcher("/productos").forward(request, response);
+			//}
+			//else request.getRequestDispatcher("/compras").forward(request, response);
+			request.getRequestDispatcher("/compras").forward(request, response);
 		}
 		
 		

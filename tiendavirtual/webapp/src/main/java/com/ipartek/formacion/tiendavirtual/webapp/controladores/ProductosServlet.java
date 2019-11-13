@@ -20,7 +20,7 @@ public class ProductosServlet extends HttpServlet {
 		try {
 			ProductoServicio servicio = (ProductoServicio) getServletContext().getAttribute("servicioProductos"); //ProductosServicioImpl.getInstancia();
 			
-			request.setAttribute("productos", servicio.getAll());
+			request.setAttribute("productos", servicio.getAllProductos());
 			
 			//request.setAttribute("mensaje",	new Mensaje("info", "Se ha cargado la lista de productos"));
 		} catch (Exception e) {

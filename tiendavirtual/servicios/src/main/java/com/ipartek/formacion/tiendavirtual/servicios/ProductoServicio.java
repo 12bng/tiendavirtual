@@ -4,13 +4,12 @@ import com.ipartek.formacion.tiendavirtual.modelos.Producto;
 
 public interface ProductoServicio {
 	Iterable<Producto> getAll();
-	Producto getById(Long id);
+	Iterable<Producto> getAllProductos();
 	
 	Producto insert(Producto producto);
 	Producto update(Producto producto);
-	Producto delete(Producto producto);
+	Producto delete(Long id);
 	String login(String correo, String contrasena);
-	Boolean alCarrito(Integer productoID, String correoUsuario);
-	String nuevoUsuario(String correo, String usuario, String contraseña );
-	Iterable<Producto> getAllCarrito(String correoUsuario);
+	Producto getById(long parseLong);
+	
 }

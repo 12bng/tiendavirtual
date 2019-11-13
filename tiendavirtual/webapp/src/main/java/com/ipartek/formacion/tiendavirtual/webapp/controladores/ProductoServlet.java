@@ -1,6 +1,7 @@
 package com.ipartek.formacion.tiendavirtual.webapp.controladores;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,13 +26,14 @@ public class ProductoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			request.setCharacterEncoding("UTF-8");
 			String nombre = request.getParameter("nombre");
 			String descripcion = request.getParameter("descripcion");
 			String precio = request.getParameter("precio");
-			String cantidad = request.getParameter("cantidad");
-
-			Producto producto = new Producto(null, nombre, descripcion, precio, cantidad);
-
+			String url = request.getParameter("imagen");
+			
+			Producto producto = new Producto(null, nombre, descripcion, precio, 1, url);
+			System.out.println(producto.isError());
 			if (producto.isError()) {
 				request.setAttribute("producto", producto);
 			} else {

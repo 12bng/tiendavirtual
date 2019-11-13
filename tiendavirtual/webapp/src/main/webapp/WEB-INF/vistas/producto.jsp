@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/vistas/includes/cabecera.jsp"%>
-
 <form method="post">
 	<div class="form-group row">
 		<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
@@ -39,13 +38,12 @@
 
 	
 	<div class="form-group row">
-		<label for="cantidad" class="col-sm-2 col-form-label">Cantidad</label>
+		<label for="imagen" class="col-sm-2 col-form-label">Imagen</label>
 		<div class="col-sm-10">
-			<input type="number" step="1"
-				class="form-control ${producto.validezCantidad}" id="cantidad"
-				name="cantidad" placeholder="Introduce la cantidad de producto"
-				value="${producto.cantidad}">
-			<div class="invalid-feedback">${producto.errorCantidad}</div>
+			<input type="text"
+				id="imagen"
+				name="imagen" maxlength="255" placeholder="Introduce la url de la imagen"
+				value="${producto.imagenurl}">
 		</div>
 	</div>
 	
